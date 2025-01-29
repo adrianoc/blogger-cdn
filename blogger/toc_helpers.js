@@ -1,19 +1,21 @@
 function addPublishedEntry(rootNode, entryMetadata, current_post_marker, index) {
-   let p = document.createElement("p");
-   p.style = 'margin-bottom:10px';
+   let entryNode = document.createElement("LI");
+   entryNode.style = 'padding-bottom:8px';
 
    let suffix = document.location.pathname.endsWith(entryMetadata.url) ? ` ${current_post_marker}` : "";
-   p.innerHTML = `<a href="${entryMetadata.url}">${index}. ${entryMetadata.description}${suffix}</a>`;
+   entryNode.innerHTML = `${index}. <a href="${entryMetadata.url}">${entryMetadata.description}${suffix}</a>`;
             
-   rootNode.appendChild(p);
+   rootNode.appendChild(entryNode);
 }
 
 
 function addUnpublishedEntry(rootNode, entryMetadata, current_post_marker, index) {
-   let p = document.createElement("p");
-   p.style = 'margin-bottom:10px';
-   p.innerHTML = `${index}. ${entryMetadata.description} ${current_post_marker}`;
-   rootNode.appendChild(p);
+   let entryNode = document.createElement("LI");
+   entryNode.style = 'padding-bottom:8px';
+
+   entryNode.innerHTML = `${index}. ${entryMetadata.description} ${current_post_marker}`;
+            
+   rootNode.appendChild(entryNode);
 }
 
 function populateToc(tocJsonUrl, tocNodeId) {
@@ -26,7 +28,8 @@ function populateToc(tocJsonUrl, tocNodeId) {
      if (xhttp.readyState !== XMLHttpRequest.DONE)
        return;
      
-     var parentNode = document.getElementById(tocNodeId);
+     var tocRoot = document.getElementById(tocNodeId);
+     var parentNode = tocRoot.createElement("OL");
      
    	 const status =xhttp.status;
      if (status === 0 || (status >= 200 && status < 400)) {
