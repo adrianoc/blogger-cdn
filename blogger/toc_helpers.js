@@ -2,11 +2,11 @@ function addPublishedEntry(rootNode, entryMetadata, current_post_marker) {
    let entryNode = document.createElement("LI");
    entryNode.style = 'padding-bottom:8px';
 
-   let suffix = document.location.pathname.endsWith(entryMetadata.url) ? ` ${current_post_marker}` : "";
+   let suffix = entryMetadata.url.endsWith(document.location.pathname) ? ` ${current_post_marker}` : "";
    entryNode.innerHTML = `<a href="${entryMetadata.url}">${entryMetadata.description}${suffix}</a>`;
    rootNode.appendChild(entryNode);
 
-   return document.location.pathname.endsWith(entryMetadata.url) ? "" : current_post_marker;
+   return entryMetadata.url.endsWith(document.location.pathname) ? "" : current_post_marker;
 }
 
 
