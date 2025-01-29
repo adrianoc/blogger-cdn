@@ -1,17 +1,19 @@
-function addPublishedEntry(rootNode, entryMetadata, index) {
-   let a = document.createElement("a");
-   a.href = entryMetadata.url;
-   let suffix = entryMetadata.url === document.location.pathname ? " (this post)" : "";
-   a.innerHTML = `${index}. ${entryMetadata.description}${suffix}<br/>`;
+function addPublishedEntry(rootNode, entryMetadata, current_post_marker, index) {
+   let p = document.createElement("p");
+   p.style = 'margin-bottom:10px';
+
+   let suffix = document.location.pathname.endsWith(entryMetadata.url) ? ` ${current_post_marker}` : "";
+   p.innerHTML = `<a href="${entryMetadata.url}">${index}. ${entryMetadata.description}${suffix}</a>`;
             
-   rootNode.appendChild(a);
+   rootNode.appendChild(p);
 }
 
 
-function addUnpublishedEntry(rootNode, entryMetadata, index) {
-   let span = document.createElement("span");
-   span.innerHTML = `${index}. ${entryMetadata.description}<br/>`;
-   rootNode.appendChild(span);
+function addUnpublishedEntry(rootNode, entryMetadata, current_post_marker, index) {
+   let p = document.createElement("p");
+   p.style = 'margin-bottom:10px';
+   p.innerHTML = `${index}. ${entryMetadata.description} ${current_post_marker}`;
+   rootNode.appendChild(p);
 }
 
 function populateToc(tocJsonUrl, tocNodeId) {
@@ -32,11 +34,14 @@ function populateToc(tocJsonUrl, tocNodeId) {
         let postEntries = JSON.parse(xhttp.responseText);
         
         let index = 1;
+        let current_post_marker = postEntries.current_post_msg;
         for(let entryMetadata of postEntries.toc_entries) {
         	if (typeof entryMetadata.url !== 'undefined')
-               addPublishedEntry(parentNode, entryMetadata, index);
-            else
-               addUnpublishedEntry(parentNode, entryMetadata, index);
+               addPublishedEntry(parentNode, entryMetadata, current_post_marker, index);
+            else {
+               addUnpublishedEntry(parentNode, entryMetadata, current_post_marker, index);
+               current_post_marker = "";
+            }
             index++;
         }
 
