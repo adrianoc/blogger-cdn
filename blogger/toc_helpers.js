@@ -4,8 +4,9 @@ function addPublishedEntry(rootNode, entryMetadata, current_post_marker) {
 
    let suffix = document.location.pathname.endsWith(entryMetadata.url) ? ` ${current_post_marker}` : "";
    entryNode.innerHTML = `<a href="${entryMetadata.url}">${entryMetadata.description}${suffix}</a>`;
-            
    rootNode.appendChild(entryNode);
+
+   return document.location.pathname.endsWith(entryMetadata.url) ? "" : current_post_marker;
 }
 
 
@@ -32,16 +33,16 @@ function populateToc(tocJsonUrl, tocNodeId) {
      var parentNode = document.createElement("OL");
      tocRoot.appendChild(parentNode);
      
-   	 const status =xhttp.status;
+     const status =xhttp.status;
      if (status === 0 || (status >= 200 && status < 400)) {
         // The request has been completed successfully
         let postEntries = JSON.parse(xhttp.responseText);
         
         let current_post_marker = postEntries.current_post_msg;
         for(let entryMetadata of postEntries.toc_entries) {
-        	if (typeof entryMetadata.url !== 'undefined')
-               addPublishedEntry(parentNode, entryMetadata, current_post_marker);
-            else {
+        	   if (typeof entryMetadata.url !== 'undefined') {
+               current_post_marker = addPublishedEntry(parentNode, entryMetadata, current_post_marker);
+            } else {
                addUnpublishedEntry(parentNode, entryMetadata, current_post_marker);
                current_post_marker = "";
             }
