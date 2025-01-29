@@ -29,7 +29,8 @@ function populateToc(tocJsonUrl, tocNodeId) {
        return;
      
      var tocRoot = document.getElementById(tocNodeId);
-     var parentNode = tocRoot.createElement("OL");
+     var parentNode = document.createElement("OL");
+     tocRoot.appendChild(parentNode);
      
    	 const status =xhttp.status;
      if (status === 0 || (status >= 200 && status < 400)) {
